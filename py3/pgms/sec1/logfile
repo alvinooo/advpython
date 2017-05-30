@@ -1,0 +1,8 @@
+Invoking max: (22, 63, 43, 10) {}
+max returned from: 63
+Invoking max: ('track', 'zulu', 'able') {}
+max returned from: zulu
+Invoking intersect: ([1, 2, 3, 4], (2, 4, 6, 8)) {}
+intersect returned from: [2, 4]
+Invoking intersect: ([13, 25, 44], (25, 55)) {}
+intersect returned from: [25]

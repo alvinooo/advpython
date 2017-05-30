@@ -1,0 +1,148 @@
+Notes for XML-RPC client/server libraries.
+
+
+The following programs/files show examples of using an 
+XML-RPC compliant server and client in Python.
+
+Note: Objects of user-defined classes can be passed in; 
+only their __dict__ attribute is transmitted.
+
+BookCatalog.db - sqlite3 database for Books 
+    (same as presented in database section)
+
+Book.py - class that supports Book objects. 
+    It defines properties for id, title,
+    author, copies, and notes. It uses the __ notation to make the attributes
+    "private" (they aren't really private--their names are just mangled).
+
+readbooks.py - a Python program that uses SQL to read the books stored in the
+    BookCatalog.db sqlite3 database.
+
+readObjectBooks.py - a Python program that uses SQL to read book data stored
+    in the BookCatalog.db sqlite3 database. It creates Book objects from
+    the data.
+
+books_server.py - XML-RPC compliant server that runs on localhost:9000. 
+
+    BookService server supports the following calls:
+    get_books()
+    get_authors()
+    get_titles()
+
+    The server makes database calls to return data in the 
+    BookCatalog database, 
+    but the database is completely hidden from the client.  
+    
+    get_books() returns a list of dictionaries,
+    where the key uses the following names: id, title, author, 
+    notes, copies. 
+    (These are the same names as the database column names.)
+    
+    get_authors() returns a list of strings of the author's name sorted 
+    alphabetically by last name.
+    
+    get_titles() returns a list of strings of the book titles 
+    sorted alphabetically.
+
+    Set logging to DEBUG to see more output from the server.
+
+    The server sends XML code that describes the data.
+
+books_client.py - XML-RPC compliant client that accesses the 
+    XML-RPC server runninng on localhost:9000, that is, 
+    the server in books_server.py.
+    
+    Note: Server is retained as an alias for ServerProxy 
+    for backwards compatibility. 
+    New code should use ServerProxy.
+
+    ServerProxy lets you connect to a XML-RPC server.
+
+    If the verbose flag is set to True, you see the 
+    XML that is both sent and the XML
+    received in the response.
+
+    This client makes calls to get_books(), get_authors(), 
+    and get_titles(). 
+
+    Note that instead of using the literal key values 
+    ("id", "author", "title", "notes", and "copies"), 
+    the client instead uses the keys() function of the dictionary
+    retrieved from the XML. Because the dictionary is not ordered, 
+    we use sorted() to access the keys in the following order: 
+    "author", "copies", "id", "notes", "title".
+    Now we can access the values in the dictionary without having 
+    to know the exact spelling of the keys.
+
+    Why is this useful? In the simple example shown by 
+    books_server.py and books_client.py, the server builds the 
+    XML based on the dictionary that we build 
+    from reading the database.  In this case, we know the field 
+    names and the client knows the field names as well.
+    So, this complexity doesn't buy us much.
+
+    However, in the case where we build Book objects in the server 
+    (see books_objects_server.py), 
+    the XML library code uses the __dict__ attribute of a 
+    Book object to build the XML.  In our Book class, 
+    it therefore uses the mangled attribute names "_Book__id",
+    "_Book__author", "_Book__title", "_Book__notes", and 
+    "_Book__copies".  
+    
+    Thus, in the client, we'd like to access the dictionary keys 
+    without referring to these mangled names. 
+    Therefore, we use the keys() function of the dictionary, 
+    sort them, and then use the keyword arguments of the 
+    Book constructor to correctly build each object.
+
+    Now, both servers (books_server.py and books_objects_server.py) 
+    and both clients (books_client.py and books_objects_client.py) 
+    can be used interchangeably.
+
+books_objects_server.py - This is an XML-RPC compliant server. 
+    The get_books() function builds a list of Book objects. 
+    The library code builds a list of dictionaries. See the discussion
+    above on how it handles the attribute names in the Book class. 
+    The get_titles() and get_authors() functions behave exactly the same 
+    as server books_server.py.
+
+books_objects_client.py - This client uses dictionary function keys() 
+    and sorts them to access the returned dictionary and build Book objects. 
+    See the discussion above.
+
+books_introspection_client.py - this XML-RPC compliant client invokes 
+    an introspection call to see the methods that this server supports.
+    This client works with both books_server.py and books_object_server.py,
+    since both of these servers support introspection.
+
+books_multicall_client.py - it is possible for XML-RPC servers to support 
+    multicalls: that is, where the client packages up multiple calls 
+    and sends the bundled request once, thus minimizing latency for multiple, 
+    successive calls.  This client uses the same three calls as program 
+    book_client.py.  However, the calls are packaged using multicall. 
+    We show how to access the results. 
+    
+    Because this client uses the sorted keys technique described above,
+    this example works with both books_server.py and books_object_server.py
+    servers.
+
+    In this example, we also turn on the verbose flag, 
+    so that you see that only one request was sent and one response 
+    was received.
+
+states.py - XML-RPC compliant client that accesses the XML-RPC 
+    server running on
+    "http://betty.userland.com/RPC2". 
+
+    Note: this server is a public service running (by somebody) 
+    on the internet.
+    
+    This server has the following methods:
+
+    examples.getStateName(num) - return the state name corresponding to num. 
+        num is between 1 and 50, inclusive.
+
+    examples.getStateList(list) - where list is a list of numbers. 
+        Returns a comma-
+        separated string containing the state names.
+

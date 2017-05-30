@@ -1,0 +1,37 @@
+<html>
+    <head>
+        {% if title %}
+        <title>{{ title }} - Book Catalog</title>
+        {% else %}
+        <title>Welcome to the Book Catalog</title>
+        {% endif %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    </head>
+    <body>
+        <div>
+             <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename = 'images/book_pic_small.jpg') }}" 
+                align="middle" width="150" ></a>
+             Book Catalog: 
+             <a href="{{ url_for('index') }}">Home</a>
+             {% if g.user.is_authenticated %}
+                 {% if g.user.role.can_modify %}
+                     | <a href="{{ url_for('add_book') }}">Create New Book</a>
+                     | <a href="{{ url_for('delete_books') }}">Delete Books</a>
+                 {% endif %}
+             | <a href="{{ url_for('logout') }}">Logout</a>
+             {% endif %}
+        </div>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                {% for message in messages %}
+                    <li>{{ message }} </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </body>
+</html>

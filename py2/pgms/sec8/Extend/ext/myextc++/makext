@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+ 
+echo "making C++ extension for myext"
+
+g++ -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -fPIC -I/usr/include/python2.7 -c myext.cpp
+
+g++ -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro myext.o -o myext.so
+
+

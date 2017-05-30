@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+ 
+echo "making extension for myhello"
+setup.py build_ext --inplace
+ 

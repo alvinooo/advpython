@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Delete Books</h1>
+    <h3>Select books to delete:</h3>
+    <form action="" method="post" name="deletebook" />
+    {{ form.hidden_tag() }}
+        <table>
+        <thead>
+        <tr>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Title</th>
+            <th>Copies in Stock</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for book, f in data %}
+        <tr>
+            <td> {{ book.category }} </td>
+            <td> {{ book.author }} </td>
+            <td><b> {{ book.title }}</b> </td>
+            <td> {{ book.copies }} </td>
+            <td> {{ f.delete_bool(value=False) }} </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        <p><input type="submit" value="Delete Selected Books"></p>
+{% endblock %}

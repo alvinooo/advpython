@@ -1,0 +1,34 @@
+h1 {
+    font-size: 2em;
+    margin-top: 40px;
+    text-left: center;
+    letter-spacing: -2px;
+    color: #777
+}
+
+h2 {
+    font-size: 2em;
+    margin-top: 40px;
+    text-align: left;
+    letter-spacing: -2px;
+    color: #777
+}
+ 
+h3 {
+    font-size: 1.7em;
+    font-weight: 100;
+    margin-top: 30px;
+    text-align: left;
+    letter-spacing: -1px;
+    color: #999;
+}
+
+body {
+    margin-left: 30px;
+    font-size: 1.2em;
+    font-weight: 100;
+    margin-top: 30px;
+    text-align: left;
+    letter-spacing: -1px;
+    color: #777;
+}

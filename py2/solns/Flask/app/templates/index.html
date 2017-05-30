@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Hi, {{ user.username }}!</h1>
+    <p>Status: {{ user.role.name }}</p>
+    <h3>Here is the current list of books:</h3>
+        <table>
+        <thead>
+        <tr>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Title</th>
+            <th>Copies in Stock</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+        <tr>
+            <td> {{ book.category }} </td>
+            <td> {{ book.author }} </td>
+            <td><b> {{ book.title }}</b> </td>
+            <td> {{ book.copies }} </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+{% endblock %}

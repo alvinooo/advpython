@@ -1,0 +1,6 @@
+Invoking square: (<__main__.MyClass object at 0xb6f3ab2c>, 3) {}
+square returned from: 9
+Invoking cube: (<class '__main__.MyClass'>, 4) {}
+cube returned from: 64
+Invoking quad: (5,) {}
+quad returned from: 625
